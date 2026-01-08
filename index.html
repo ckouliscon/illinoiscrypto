@@ -24,15 +24,34 @@
             min-height: 100vh;
         }
 
-        /* Hero Section - Centered */
+        /* Hero Section */
         .hero {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
             text-align: center;
+        }
+
+        /* Logo Styling */
+        .logo {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .status-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
         h1 {
@@ -44,23 +63,16 @@
             letter-spacing: -1px;
         }
 
-        .status-badge {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(56, 189, 248, 0.3);
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            max-width: 550px;
+            margin: 1.5rem auto 2.5rem auto;
+            line-height: 1.6;
         }
 
-        p.subtitle {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            max-width: 500px;
-            margin-bottom: 2rem;
+        .subtitle strong {
+            color: var(--accent);
         }
 
         /* Form Styling */
@@ -109,7 +121,7 @@
             border-top: 1px solid rgba(255,255,255,0.05);
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
             flex-wrap: wrap;
         }
 
@@ -133,15 +145,22 @@
 <body>
 
     <div class="hero">
-        <div class="status-badge">Illinois Crypto Hub</div>
+        <img src="logo.png" alt="Illinois Crypto Logo" class="logo">
+        
+        <div class="status-badge">Official Community Hub</div>
+        
         <h1>Coming Soon</h1>
-        <p class="subtitle">Join the mailing list...</p>
+        
+        <p class="subtitle">
+            The future of finance is arriving in the Prairie State. Join our mailing list for 
+            <strong>local news, networking events, and community updates</strong> as we build the Illinois crypto ecosystem.
+        </p>
 
         <div class="form-container">
             <form id="cryptoForm">
                 <input type="text" name="name" placeholder="Full Name" required>
                 <input type="email" name="email" placeholder="Email Address" required>
-                <button type="submit">Keep Me Updated</button>
+                <button type="submit" id="submitBtn">Keep Me Updated</button>
             </form>
             <div id="msg">Awesome! You're on the list.</div>
         </div>
@@ -157,14 +176,15 @@
     </footer>
 
     <script>
+        // REPLACE THE URL BELOW WITH YOUR GOOGLE WEB APP URL
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyu_dgfSrAJMA8YMbN0LqVFkgw3C1_ALzjdiy2bREcZuKUB-MRW-IGlM0Xcax5uGE8XTQ/exec'
         const form = document.getElementById('cryptoForm')
         const msg = document.getElementById('msg')
+        const btn = document.getElementById('submitBtn')
 
         form.addEventListener('submit', e => {
             e.preventDefault()
-            // Optimization: Change button text while loading
-            const btn = form.querySelector('button')
+            btn.disabled = true
             btn.innerText = 'Joining...'
             
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
@@ -174,10 +194,11 @@
                 })
                 .catch(error => {
                     console.error('Error!', error.message)
+                    btn.disabled = false
                     btn.innerText = 'Keep Me Updated'
+                    alert('Something went wrong. Please try again.')
                 })
         })
     </script>
 </body>
-
 </html>
